@@ -12,10 +12,11 @@ import {AnyAction} from "redux";
 import {ThunkDispatch} from "redux-thunk";
 import {connect} from "react-redux";
 import {fetchActiveWorkout} from "../../../../store/workouts/actions/fetch-active-workout/actions";
-import {Button, Card, Modal} from "react-bootstrap";
+import {Button, Modal} from "react-bootstrap";
 import AddExerciseToWorkoutForm from "../../../components/exercise/AddExerciseToWorkoutForm/AddExerciseToWorkoutForm";
 import {updateActiveWorkout} from "../../../../store/workouts/actions/update-active-workout/actions";
 import {IdentifiableExerciseType} from "../../../../models/exercise.model";
+import ExerciseCard from "../../../components/exercise/ExerciseCard/ExerciseCard";
 
 interface WorkoutDetailProperties extends RouteComponentProps<{ workoutId: string }> {
 	workout: IdentifiableWorkout | null;
@@ -63,7 +64,7 @@ class WorkoutDetail extends Component<WorkoutDetailProperties, WorkoutDetailStat
 						</Col>
 					</Row>
 					<Row>
-						{workout.element.exerciseTypes.map(value => <Col><Card className="mb-2"><Card.Body>{value.element.name}</Card.Body></Card></Col>)}
+						{workout.element.exerciseTypes.map(exerciseType => <Col><ExerciseCard exercise={exerciseType}/></Col>)}
 					</Row>
 				</Container>
 				{this.renderAddExerciseTypeToWorkoutModal()}
