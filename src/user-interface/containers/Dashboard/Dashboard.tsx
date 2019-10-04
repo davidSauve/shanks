@@ -7,12 +7,13 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {fetchWorkouts} from "../../../store/workouts/actions/fetch-workouts/actions";
 import DataFetchingPlaceholder from "../../components/DataFetchingPlaceholder/DataFetchingPlaceholder";
-import {createNewWorkout} from "../../../store/workouts/actions/upsert/actions";
+import {createNewWorkout} from "../../../store/workouts/actions/insert/actions";
 import {Link} from "react-router-dom";
 
 interface DashboardProperties {
 	identifiableWorkouts: IdentifiableWorkout[];
 	fetching: boolean;
+	fetchingErrorMessage: string | null;
 	fetchWorkouts: () => void;
 	createNewWorkout: () => void;
 }
@@ -42,7 +43,7 @@ class Dashboard extends Component<DashboardProperties, DashboardState> {
 									</div>
 								</Card.Header>
 								<Card.Body>
-									<DataFetchingPlaceholder fetching={this.props.fetching}>
+									<DataFetchingPlaceholder fetching={this.props.fetching} fetchingDataErrorMessage={this.props.fetchingErrorMessage}>
 										<table className="table table-sm">
 											<tbody>
 											{this.props.identifiableWorkouts.map((identifiableWorkout: IdentifiableWorkout) => (
@@ -75,7 +76,7 @@ function mapStateToProps(state: AppState) {
 function mapDispatchToProps(dispatch: ThunkDispatch<null, null, AnyAction>) {
 	return {
 		fetchWorkouts: () => dispatch(fetchWorkouts()),
-		createNewWorkout: () => dispatch(createNewWorkout({title: `Workout of ${new Date().toLocaleDateString()}`, date: new Date().toLocaleDateString()}))
+		createNewWorkout: () => dispatch(createNewWorkout({title: `Workout of ${new Date().toLocaleDateString()}`, date: new Date().toLocaleDateString(), exerciseTypes : []}))
 	};
 }
 

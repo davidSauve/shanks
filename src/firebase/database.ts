@@ -1,6 +1,7 @@
 import * as firebase from "firebase";
 import {IdentifiableWorkout, Workout} from "../models/workout.models";
 
+
 const firebaseConfig = {
 	apiKey: "AIzaSyD1okgbcATu2K8cpwqkmUQrRWxVD20xPj4",
 	authDomain: "shanks-1992.firebaseapp.com",
@@ -38,7 +39,7 @@ export function fetchActiveWorkout(id: string) : Promise<{data : IdentifiableWor
 		.ref(`/workouts/${id}`)
 		.once("value")
 		.then(dataSnapshot => {
-			return {data: {id, element : dataSnapshot.val()}};
+			return {data: {id, element : {exerciseTypes : [], ...dataSnapshot.val()}}};
 		});
 }
 
@@ -55,4 +56,11 @@ export const createWorkout = (workout: Workout) : Promise<{data : IdentifiableWo
 		.then(dataSnapshot => ({
 			data: {id: newWorkoutKey, element : (dataSnapshot.val() as Workout)},
 		}));
+};
+
+export const updateWorkout = (id: string, workout: Workout) : Promise<any> => {
+	return firebase
+		.database()
+		.ref(`/workouts/${id}`)
+		.set(workout);
 };
